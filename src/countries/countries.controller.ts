@@ -19,28 +19,31 @@ export class CountriesController {
   constructor(private countriesService: CountriesService) {}
 
   @Get()
-  findAll() {
-    return this.countriesService.findAll();
+  async findAll() {
+    return await this.countriesService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.countriesService.findOne(parseInt(id));
+  async findOne(@Param('id') id: string) {
+    return await this.countriesService.findOne(parseInt(id));
   }
 
   @Post()
-  create(@Body() createCountryDto: CreateCountryDto) {
-    return this.countriesService.create(createCountryDto);
+  async create(@Body() createCountryDto: CreateCountryDto) {
+    return await this.countriesService.create(createCountryDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateCountryDto: UpdateCountryDto) {
-    return this.countriesService.update(parseInt(id), updateCountryDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateCountryDto: UpdateCountryDto,
+  ) {
+    return await this.countriesService.update(parseInt(id), updateCountryDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string) {
-    this.countriesService.delete(parseInt(id));
+  async remove(@Param('id') id: string) {
+    await this.countriesService.delete(parseInt(id));
   }
 }

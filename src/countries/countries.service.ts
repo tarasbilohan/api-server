@@ -1,60 +1,41 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Country } from './interfaces/country.interface';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CountryEntity } from './country.entity';
 
 @Injectable()
 export class CountriesService {
-  private countries: Country[] = [
-    { id: 1, code: 'UA', name: 'Ukraine' },
-    { id: 2, code: 'UK', name: 'United Kingdom' },
-    { id: 3, code: 'US', name: 'United States' },
-  ];
+  constructor(
+    @InjectRepository(CountryEntity)
+    private countriesRepository: Repository<CountryEntity>,
+  ) {}
 
-  private lastId = 3;
-
-  findAll(): Country[] {
-    return this.countries;
+  async findAll(): Promise<CountryEntity[]> {
+    return await this.countriesRepository.find();
   }
 
-  findOne(id: number): Country | null {
-    return this.countries.find(country => country.id === id) || null;
+  async findOne(id: number): Promise<CountryEntity | null> {
+    return await this.countriesRepository.findOne(id);
   }
 
-  create(country: Country) {
-    const newCountry = {
-      id: ++this.lastId,
-      code: country.code,
-      name: country.name,
-    };
+  async create(country) {
+    const newCountry = this.countriesRepository.create();
+    newCountry.code = country.code;
+    newCountry.name = country.name;
+    newCountry.createdAt = new Date();
 
-    this.countries.push(newCountry);
-
-    return newCountry;
+    return await this.countriesRepository.save(newCountry);
   }
 
-  update(id: number, country: Country) {
-    const originalCountry = this.findOne(id);
+  async update(id: number, country) {
+    country.updatedAt = new Date();
 
-    if (typeof originalCountry === 'undefined') {
-      throw new NotFoundException();
-    }
+    await this.countriesRepository.update(id, country);
 
-    originalCountry.code = country.code;
-    originalCountry.name = country.name;
-
-    return originalCountry;
+    return this.findOne(id);
   }
 
-  delete(id: number) {
-    const index = this.findIndex(id);
-
-    if (index === -1) {
-      throw new NotFoundException();
-    }
-
-    this.countries.slice(index, 1);
-  }
-
-  private findIndex(id: number): number {
-    return this.countries.findIndex(country => country.id === id);
+  async delete(id: number) {
+    await this.countriesRepository.delete(id);
   }
 }
