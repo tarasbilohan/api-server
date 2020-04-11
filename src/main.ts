@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
 import * as compression from 'compression';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -19,6 +20,15 @@ async function bootstrap() {
     }),
   );
   app.use(compression());
+
+  const options = new DocumentBuilder()
+    .setTitle('API Server')
+    .setDescription('Example app for API server')
+    .setVersion('1.0')
+    .build();
+
+  const apiServerDocument = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('api', app, apiServerDocument);
 
   await app.listen(configService.get<number>('app.port'));
 }
