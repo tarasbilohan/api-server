@@ -18,6 +18,10 @@ export class UsersService {
     return await this.UserRepository.findOne(id);
   }
 
+  async findOneByEmail(email: string): Promise<UserEntity | null> {
+    return await this.UserRepository.findOne({ email });
+  }
+
   async create(user) {
     //
   }

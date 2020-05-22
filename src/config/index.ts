@@ -2,6 +2,7 @@ import * as Joi from '@hapi/joi';
 import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces';
 
 import appConfig from './app.config';
+import authConfig from './auth.config';
 import dbConfig from './db.config';
 
 const configModuleOptions: ConfigModuleOptions = {
@@ -12,7 +13,7 @@ const configModuleOptions: ConfigModuleOptions = {
     '.env.local',
     '.env',
   ],
-  load: [appConfig, dbConfig],
+  load: [appConfig, authConfig, dbConfig],
   validationSchema: Joi.object({
     NODE_ENV: Joi.string()
       .valid('development', 'production', 'test')
@@ -26,6 +27,8 @@ const configModuleOptions: ConfigModuleOptions = {
     DB_USER: Joi.string().default('api_server_dbu'),
     DB_PASSWORD: Joi.string().default('secret'),
     DB_DATABASE: Joi.string().default('api_server_db'),
+
+    SECRET: Joi.string().default('secret'),
   }),
 };
 

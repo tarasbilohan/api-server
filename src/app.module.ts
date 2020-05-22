@@ -5,6 +5,7 @@ import configModuleOptions from './config';
 import typeOrmModuleOptions from './database';
 import { CountriesModule } from './countries/countries.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { UsersModule } from './users/users.module';
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     CountriesModule,
     UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

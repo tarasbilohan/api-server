@@ -17,12 +17,19 @@ export class UserEntity {
   @Column({
     name: 'first_name',
   })
-  first_name: string;
+  firstName: string;
 
   @Column({
     name: 'last_name',
   })
-  last_name: string;
+  lastName: string;
+
+  plainPassword: string;
+
+  @Column({
+    name: 'password',
+  })
+  password: string;
 
   @Column({
     name: 'created_at',
