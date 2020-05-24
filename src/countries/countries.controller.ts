@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   UseGuards,
@@ -29,8 +30,8 @@ export class CountriesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.countriesService.findOne(parseInt(id));
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.countriesService.findOne(id);
   }
 
   @Post()
@@ -40,15 +41,15 @@ export class CountriesController {
 
   @Put(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCountryDto: UpdateCountryDto,
   ) {
-    return await this.countriesService.update(parseInt(id), updateCountryDto);
+    return await this.countriesService.update(id, updateCountryDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id') id: string) {
-    await this.countriesService.delete(parseInt(id));
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    await this.countriesService.delete(id);
   }
 }
