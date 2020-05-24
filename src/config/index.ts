@@ -27,6 +27,7 @@ const configModuleOptions: ConfigModuleOptions = {
     DB_USER: Joi.string().default('api_server_dbu'),
     DB_PASSWORD: Joi.string().default('secret'),
     DB_DATABASE: Joi.string().default('api_server_db'),
+    DB_SYNCHRONIZE: Joi.string().default(false),
 
     SECRET: Joi.string().default('secret'),
   }),
