@@ -1,4 +1,12 @@
-import { Controller, Request, Post, UseGuards, Body } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  UseGuards,
+  Body,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from 'src/auth/dto/login-user.dto';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -11,6 +19,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
+  @UseInterceptors(ClassSerializerInterceptor)
   async login(@Body() loginUserDto: LoginUserDto, @Request() req) {
     return this.authService.login(req.user);
   }

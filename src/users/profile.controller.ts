@@ -1,4 +1,11 @@
-import { Controller, Request, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  UseGuards,
+  Get,
+  ClassSerializerInterceptor,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -8,6 +15,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 @Controller()
 export class ProfileController {
   @Get('profile')
+  @UseInterceptors(ClassSerializerInterceptor)
   async getProfile(@Request() req) {
     return req.user;
   }
