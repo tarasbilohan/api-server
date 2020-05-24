@@ -11,11 +11,13 @@ export class CountryEntity {
 
   @Column({
     name: 'code',
+    length: 2,
   })
   code: string;
 
   @Column({
     name: 'name',
+    length: 255,
   })
   name: string;
 

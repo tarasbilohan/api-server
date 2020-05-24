@@ -17,11 +17,13 @@ export class UserEntity {
 
   @Column({
     name: 'first_name',
+    length: 255,
   })
   firstName: string;
 
   @Column({
     name: 'last_name',
+    length: 255,
   })
   lastName: string;
 
@@ -30,6 +32,7 @@ export class UserEntity {
 
   @Column({
     name: 'password',
+    length: 255,
   })
   @Exclude()
   password: string;

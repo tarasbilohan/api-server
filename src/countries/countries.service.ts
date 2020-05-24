@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateCountryDto } from 'src/countries/dto/create-country.dto';
+import { UpdateCountryDto } from 'src/countries/dto/update-country.dto';
 import { Repository } from 'typeorm';
 import { CountryEntity } from './country.entity';
 
@@ -18,24 +20,23 @@ export class CountriesService {
     return await this.countriesRepository.findOne(id);
   }
 
-  async create(country) {
-    const newCountry = this.countriesRepository.create();
-    newCountry.code = country.code;
-    newCountry.name = country.name;
-    newCountry.createdAt = new Date();
+  async create(countryData: CreateCountryDto) {
+    const newCountry = new CountryEntity();
+    newCountry.code = countryData.code;
+    newCountry.name = countryData.name;
 
     return await this.countriesRepository.save(newCountry);
   }
 
-  async update(id: number, country) {
-    country.updatedAt = new Date();
+  async update(id: number, countryData: UpdateCountryDto) {
+    const toUpdateCountry = await this.countriesRepository.findOne(id);
+    toUpdateCountry.code = countryData.code;
+    toUpdateCountry.name = countryData.name;
 
-    await this.countriesRepository.update(id, country);
-
-    return this.findOne(id);
+    return await this.countriesRepository.update(id, toUpdateCountry);
   }
 
   async delete(id: number) {
-    await this.countriesRepository.delete(id);
+    return await this.countriesRepository.delete(id);
   }
 }
