@@ -1,8 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeUpdate } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeUpdate,
+  Unique,
+} from 'typeorm';
 
 @Entity({
   name: 'countries',
 })
+@Unique(['code'])
+@Unique(['name'])
 export class CountryEntity {
   @PrimaryGeneratedColumn({
     name: 'id',
