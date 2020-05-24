@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import * as helmet from 'helmet';
@@ -23,6 +24,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.setGlobalPrefix(configService.get<string>('app.globalPrefix'));
+  app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
   app.use(helmet());
   app.use(
@@ -37,6 +39,7 @@ async function bootstrap() {
     .setTitle('API Server')
     .setDescription('Example app for API server')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const apiServerDocument = SwaggerModule.createDocument(app, options);

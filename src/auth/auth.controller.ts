@@ -1,9 +1,8 @@
-import { Controller, Request, Post, UseGuards, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Request, Post, UseGuards, Body } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { LoginUserDto } from 'src/auth/dto/login-user.dto';
 import { LocalAuthGuard } from './local-auth.guard';
-import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuthService } from './auth.service';
-import * as bcrypt from 'bcrypt';
 
 @ApiTags('Auth')
 @Controller()
@@ -12,14 +11,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Request() req) {
+  async login(@Body() loginUserDto: LoginUserDto, @Request() req) {
     return this.authService.login(req.user);
-  }
-
-  // TODO move to another controller
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  async getProfile(@Request() req) {
-    return req.user;
   }
 }
